@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import LineSelector from "./LineSelector";
 
 const ModeSelector = () => {
 
@@ -8,7 +9,7 @@ const ModeSelector = () => {
 	useEffect(() => {
 		fetch('https://api.tfl.gov.uk/Line/Meta/Modes')
 		.then(response => response.json())
-		.then(data => setModes(data))
+		.then(data => setModes(data));
 	}, [])
 
 	const toggleModes = (e) => {
@@ -22,7 +23,7 @@ const ModeSelector = () => {
 				<option value="">Choose a mode of transport</option>
 				{modes.map(el => <option key={el.modeName} value={el.modeName}>{el.modeName}</option>)}
 			</select>
-			{selectedMode && <h4>Your selected mode: {selectedMode}</h4>}
+			{selectedMode && <LineSelector selectedMode={selectedMode}/>}
 			</>
 		);
 	} else {
