@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import StopSelector from "./StopSelector";
 
 const LineSelector = ({selectedMode}) => {
 	const [lines, setLines] = useState('');
@@ -23,7 +24,7 @@ const LineSelector = ({selectedMode}) => {
 				{lines.map(el => <option key={el.id} value={el.name}>{el.name}</option>)}
 			</select> : <h3>No lines available for this mode of transport</h3>
 			}
-			{line && <h3>YOur selected line {line}</h3>}
+			{line && <StopSelector line={line}/>}
 			</>
 		);
 	} else {
