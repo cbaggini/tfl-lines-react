@@ -1,13 +1,17 @@
 import React, {useState, useEffect} from "react";
 
-const StopSelector = ({line}) => {
+const StopSelector = ({line, selectedMode}) => {
 	const [stops, setStops] = useState([]);
+	const [isError, setIsError] = useState(false);
 
 	useEffect(() => {
-		fetch(`https://api.tfl.gov.uk/Line/${line}/Route`)
+		fetch(`https://api.tfl.gov.uk/Line/${line.replace(' ','-')}/Route`)
 		.then(response => {if (response.status === 200) {
+			setIsError(false);
 			return response.json();
-		} 	
+		} else {
+			setIsError(true);
+		}
 		})
 		.then(data => {
 			if (data) {
@@ -19,18 +23,23 @@ const StopSelector = ({line}) => {
 		})
 	}, [line]);
 
+	useEffect(() => {
+		setStops([]);
+		setIsError(false);
+	}, [selectedMode]);
+
 	if (stops.length > 0) {
 		return (<section>
 					<h3>LINE: {line.toUpperCase()}</h3>
-					<div>
-						Start of line: {stops[0]}
-					</div>
-					<div>
-						End of line: {stops[1]}
+					<div className="stops">
+						<p className="box">Start of line: {stops[0]}</p>
+						<p className="box">End of line: {stops[1]}</p>
 					</div>
 				</section>);
-	} else {
+	} else if (isError) {
 		return <h3>No stops available</h3>
+	} else {
+		return <section></section>
 	}
 }
 

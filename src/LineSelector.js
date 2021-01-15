@@ -21,10 +21,10 @@ const LineSelector = ({selectedMode}) => {
 			{lines.length > 0 ? 
 			<select onChange={toggleLines}>
 				<option value="">Choose a line</option>
-				{lines.map(el => <option key={el.id} value={el.name}>{el.name}</option>)}
+				{lines.map(el => <option key={el.id} value={el.id}>{el.name}</option>)}
 			</select> : <h3>No lines available for this mode of transport</h3>
 			}
-			{line && <StopSelector line={line}/>}
+			{line && <StopSelector selectedMode={selectedMode} line={line}/>}
 			</>
 		);
 	} else {
