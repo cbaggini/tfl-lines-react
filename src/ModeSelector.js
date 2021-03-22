@@ -5,15 +5,19 @@ const ModeSelector = () => {
 
 	const [modes, setModes] = useState('');
 	const [selectedMode, setSelectedMode] = useState('');
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		fetch('https://api.tfl.gov.uk/Line/Meta/Modes')
 		.then(response => response.json())
-		.then(data => setModes(data));
+		.then(
+			data => setModes(data),
+			error => setError(error)
+		);
 	}, [])
 
 	const toggleModes = (e) => {
-		setSelectedMode(e.target.value);
+		setSelectedMode(e.target.value); 
 	}
 
 	if (modes) {
@@ -26,6 +30,8 @@ const ModeSelector = () => {
 			{selectedMode && <LineSelector selectedMode={selectedMode}/>}
 			</>
 		);
+	} else if (error) {
+		return (<div>{error.message}</div>);
 	} else {
 		return (<h3>Loading...</h3>);
 	}

@@ -4,11 +4,13 @@ import StopSelector from "./StopSelector";
 const LineSelector = ({selectedMode}) => {
 	const [lines, setLines] = useState('');
 	const [line, setLine] = useState('');
+	const [lineError, setLineError] = useState(null);
 
 	useEffect(() => {
 		fetch(`https://api.tfl.gov.uk/Line/Mode/${selectedMode}`)
 		.then(response => response.json())
-		.then(data => setLines(data))
+		.then(data => setLines(data),
+			error => setLineError(error))
 	}, [selectedMode]);
 
 	const toggleLines = (e) => {
@@ -27,6 +29,8 @@ const LineSelector = ({selectedMode}) => {
 			{line && <StopSelector selectedMode={selectedMode} line={line}/>}
 			</>
 		);
+	} else if (lineError) {
+		return (<div>{lineError.message}</div>);
 	} else {
 		return (<h3>Loading...</h3>);
 	}
